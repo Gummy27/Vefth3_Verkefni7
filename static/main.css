@@ -1,0 +1,38 @@
+body{
+    font-size: 1.3em;
+
+    max-width: 960px;
+    margin: 0 auto;
+
+    text-align: center;
+}
+main{
+    min-height: 38em;
+}
+
+.accounts{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: 20px;
+}
+.accounts ol{
+    padding: 0;
+    margin: 0;
+}
+.accounts ol ul{
+    border: 1px solid black;
+}
+
+.accounts ol:first-child{
+    text-align: left;
+}
+.accounts ol:nth-child(2){
+    text-align: left;
+}
+
+.accounts ol ul:nth-child(odd){background-color: lightgray;}
+
+.loginError{
+    font-size: 0.5em;
+    color: red;
+}

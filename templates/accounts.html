@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% block header %}
+<h1>Aðgangar:</h1>
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="accounts">
+        <ol>
+        {% for account in accounts %}
+            <ul>
+                <p>{{ account['name'] }}</p>
+            </ul>
+        {% endfor %}
+        </ol>
+        <ol>
+        {% for account in accounts %}
+            <ul>
+                <p>{{ account['password'] }}</p>
+            </ul>
+        {% endfor %}
+        </ol>
+    </div>
+
+    <h2><a href="/">Til baka</a></h2>
+</main>
+{% endblock %}

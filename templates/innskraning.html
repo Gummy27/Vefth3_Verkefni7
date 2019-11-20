@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% block header %}
+<h1>Innskráning:</h1>
+{% endblock %}
+
+{% block content %}
+<form class="Form" method="POST">
+    <div>
+        <p>Username or Email:</p>
+        <input type="text" name="username" required placeholder="Someone26" size="35">
+    </div>
+
+    <div>
+        <p>Heimilisfang:</p>
+        <input type="password" name="password" required placeholder="************">
+    </div>
+    <div>
+        <input type="submit" value="Submit">
+    </div>
+
+    <h3><a href="{{ url_for('newSqlUser') }}"> Nýskráning </a></h3>
+</div>
+</form>
+{% endblock %}
