@@ -1,15 +1,15 @@
-from flask import Flask, render_template, session, url_for, request, redirect
+from flask import Flask, render_template, session, url_for, request, redirect, flash
 from os import urandom
 import pymysql
-import csv
 
 app = Flask(__name__)
 app.secret_key = urandom(24)
 
 def getAccounts():
-	password = {
-		'password':'Swampert27'}
-	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
+	password = [
+		'Swampert27'
+	]
+	connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 	sql = connection.cursor()
 	sql.execute('select * from users;')
 	accounts = sql.fetchall()
@@ -17,27 +17,27 @@ def getAccounts():
 
 	return accounts
 
-accounts = getAccounts
-
 @app.route("/", methods=['POST', 'GET'])
 def home():
+	error = False
 	if request.method == 'POST':
 		session['user'] = request.form.get('username')
 		session['password'] = request.form.get('password')
 
-		for account in accounts:
-			print(session['user'], account['name'])
-			print(session['password'], account['password'])
+		for account in getAccounts():
 			if account['name'] == session['user'] or account['email'] == session['user']:
 				if account['password'] == session['password']:
+					flash("Innskráning tókst!")
 					return redirect(url_for('signedIn'))
 		
-	return render_template('innskraning.html')
+		error = True
+		
+	return render_template('innskraning.html', error=error)
 
 
 @app.route("/signedIn")
 def signedIn():
-	return render_template('accounts.html', accounts=accounts)
+	return render_template('accounts.html', accounts=getAccounts())
 
 @app.route("/new", methods=['POST', 'GET'])
 def newSqlUser():
@@ -47,7 +47,7 @@ def newSqlUser():
 		session['password'] = request.form.get('password')
 		session['email'] = request.form.get('email')
 
-		for account in accounts:
+		for account in getAccounts():
 			if account['name'] == session['user']:
 				errors[0] = True
 
@@ -55,7 +55,10 @@ def newSqlUser():
 				errors[1] = True
 
 		if not errors[0] and not errors[1]:
-			connection = pymysql.connect(host='localhost', user='Gudmundur', password=password['password'], db='Vefth', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
+			password=[
+				'Swampert27'
+			]
+			connection = pymysql.connect(host='localhost', user='Gudmundur', password=password[0], db='Vefth', charset='utf8mb4',cursorclass=pymysql.cursors.DictCursor)
 			command = f"insert into users(name, password, email)\nValues('{ session['user'] }', '{ session['password'] }', '{ session['email'] }');"
 			sql = connection.cursor()
 			sql.execute(command)
